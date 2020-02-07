@@ -475,6 +475,20 @@ if (!$noLoadingScreen) {
                                 </div>
                             </div>
                             <?php
+							 }
+                        if (! $noHighLevelData && ! $noPokeIVIcons ) {
+                            ?>
+                            <div class="form-control switch-container">
+                                <h3><?php echo i8ln( 'IV Icons' ) ?></h3>
+                                <div class="onoffswitch">
+                                    <input id="iv-icon-switch" type="checkbox" name="iv-icon-switch" class="onoffswitch-checkbox">
+                                    <label class="onoffswitch-label" for="iv-icon-switch">
+                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <?php
                         } ?>
                         <div class="form-row min-stats-row">
                             <?php
@@ -2297,6 +2311,8 @@ if (!$noLoadingScreen) {
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
+	var noPokeIVIcons = <?php echo $noPokeIVIcons === true ? 'true' : 'false' ?>;
+    var enablePokeIVIcons = <?php echo $noPokeIVIcons ? 'false' : $enablePokeIVIcons ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

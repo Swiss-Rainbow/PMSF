@@ -35,6 +35,7 @@ var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
 var $selectIconStyle
+var $switchPokeIVIcons
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -1162,6 +1163,7 @@ function initSidebar() {
     $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
     $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
     $('#dark-mode-switch').prop('checked', Store.get('darkMode'))
+	$('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
 
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
@@ -7419,6 +7421,12 @@ $(function () {
         } else {
             disableDarkMode()
         }
+    })
+	
+	    $switchPokeIVIcons = $('#iv-icon-switch')
+    $switchPokeIVIcons.on('change', function () {
+        Store.set('showIVIcons', this.checked)
+        redrawPokemon(mapData.pokemons)
     })
 
     if ($('#nav-accordion').length) {
