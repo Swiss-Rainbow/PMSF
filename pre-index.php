@@ -475,7 +475,7 @@ if (!$noLoadingScreen) {
                                 </div>
                             </div>
                             <?php
-							 }
+						}
                         if (! $noHighLevelData && ! $noPokeIVIcons ) {
                             ?>
                             <div class="form-control switch-container">
@@ -1951,7 +1951,7 @@ if (!$noLoadingScreen) {
                     <?php if (! $noSearchNests) { ?>
                         <div id="tab-nests">
                             <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
                                    data-type="nests" class="search-input"/>
                             <ul id="nest-search-results" class="search-results nest-results"></ul>
                         </div>
@@ -2291,6 +2291,8 @@ if (!$noLoadingScreen) {
     var forcedTileServer = <?php echo $forcedTileServer === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
     var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
+	var noPokeIVIcons = <?php echo $noPokeIVIcons === true ? 'true' : 'false' ?>;
+    var enablePokeIVIcons = <?php echo $noPokeIVIcons ? 'false' : $enablePokeIVIcons ?>;
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
@@ -2311,8 +2313,6 @@ if (!$noLoadingScreen) {
     var showYourLove = <?php echo $showYourLove === true ? 'true' : 'false' ?>;
     var defaultDustAmount = <?php echo $defaultDustAmount; ?>;
     var noDarkMode = <?php echo $noDarkMode === true ? 'true' : 'false' ?>;
-	var noPokeIVIcons = <?php echo $noPokeIVIcons === true ? 'true' : 'false' ?>;
-    var enablePokeIVIcons = <?php echo $noPokeIVIcons ? 'false' : $enablePokeIVIcons ?>;
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script src="static/dist/js/map.common.min.js"></script>

@@ -214,7 +214,6 @@
     "noLastScan": true,
     "noDarkMode": true,
     "defaultDustAmount": true,
-	"$noPokeIVIcons": true,
 	"enablePokeIVIcons": true
   }
 }

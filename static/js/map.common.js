@@ -249,6 +249,11 @@ var StoreOptions = {
             default: showTinyRat,
             type: StoreTypes.Boolean
         },
+    'showIVIcons':
+        {
+            default: enablePokeIVIcons,
+            type: StoreTypes.Boolean
+        },
     'showPokestops':
         {
             default: enablePokestops,
@@ -434,11 +439,6 @@ var StoreOptions = {
             default: 'default',
             type: StoreTypes.String
         },
-	'showIVIcons':
-        {
-            default: enablePokeIVIcons,
-            type: StoreTypes.Boolean
-        },
     'darkMode':
         {
             default: window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
@@ -514,7 +514,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
     if (pokemonCostume > 0 && noCostumeIcons === false) {
         costume = '_' + pokemonCostume
     }
-        var iv = null
+    var iv = null
     if (attack !== null && defense !== null && stamina !== null) {
         iv = 100 * (attack + defense + stamina) / 45
     }
@@ -544,7 +544,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>' +
-		IvIcon // Only Show if its not empty.
+		    IvIcon // Only Show if its not empty.
     // With Weather
     } else if (noWeatherIcons === false) {
         html = '<img src="' + iconpath + 'pokemon_icon_' + pokemonIdStr + '_' + formStr + costume + '.png" style="width:' + scaledIconSizeWidth + 'px;height:auto;'
@@ -553,7 +553,7 @@ function getPokemonSprite(index, sprite, displayHeight, weather = 0, encounterFo
             html += 'filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);-webkit-filter:drop-shadow(0 0 10px red)drop-shadow(0 0 10px red);'
         }
         html += '"/>' +
-		    IvIcon + // Only Show if its not empty.
+			IvIcon + // Only Show if its not empty.
         '<img src="static/weather/a-' + weather + '.png" style="width:' + scaledWeatherIconSizeWidth + 'px;height:auto;position:absolute;top:-' + scaledWeatherIconOffset + 'px;left:' + scaledWeatherIconSizeWidth + 'px;"/>'
     }
     var pokemonIcon = L.divIcon({

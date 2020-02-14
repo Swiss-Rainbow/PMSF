@@ -29,13 +29,13 @@ var $switchTinyRat
 var $switchBigKarp
 var $selectDirectionProvider
 var $switchExEligible
+var $switchPokeIVIcons
 var $questsExcludePokemon
 var $questsExcludeItem
 var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
 var $selectIconStyle
-var $switchPokeIVIcons
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -1035,12 +1035,13 @@ function createHearts() {
         const valentine = '<canvas id="valentine-canvas"></canvas>'
         $('#map').append(valentine)
         var hearts = {
-            heartHeight: 15,
-            heartWidth: 15,
+            heartHeight: 25,
+            heartWidth: 25,
             hearts: [],
-            heartImage: 'https://pngimage.net/wp-content/uploads/2018/06/heart-png-images.png',
-            maxHearts: 30,
-            minScale: 0.3,
+            heartImage: 'static/images/misc/heart-0.png',
+            heartImageAlt: 'static/images/misc/heart-1.png',
+            maxHearts: 50,
+            minScale: 0.4,
             draw: function () {
                 this.setCanvasSize()
                 this.ctx.clearRect(0, 0, this.w, this.h)
@@ -1048,7 +1049,11 @@ function createHearts() {
                     var heart = this.hearts[i]
                     heart.image = new Image()
                     heart.image.style.height = heart.height
-                    heart.image.src = this.heartImage
+                    if (i % 2 === 1) {
+                        heart.image.src = this.heartImageAlt
+                    } else {
+                        heart.image.src = this.heartImage
+                    }
                     this.ctx.globalAlpha = heart.opacity
                     this.ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height)
                 }
@@ -1133,6 +1138,7 @@ function initSidebar() {
     $('#pokemon-filter-wrapper').toggle(Store.get('showPokemon'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+	$('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#allPokestops-switch').prop('checked', Store.get('showAllPokestops'))
     $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
@@ -1163,7 +1169,6 @@ function initSidebar() {
     $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
     $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
     $('#dark-mode-switch').prop('checked', Store.get('darkMode'))
-	$('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
 
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
@@ -1704,6 +1709,7 @@ function getQuest(item) {
                     }
                     if (questinfo !== null) {
                         str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
+                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']].name)
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }
@@ -7413,6 +7419,12 @@ $(function () {
             delete locationMarker.rangeCircle
         }
     })
+	
+	$switchPokeIVIcons = $('#iv-icon-switch')
+		$switchPokeIVIcons.on('change', function () {
+        Store.set('showIVIcons', this.checked)
+        redrawPokemon(mapData.pokemons)
+    })
 
     $('#dark-mode-switch').change(function () {
         Store.set('darkMode', this.checked)
@@ -7421,12 +7433,6 @@ $(function () {
         } else {
             disableDarkMode()
         }
-    })
-	
-	    $switchPokeIVIcons = $('#iv-icon-switch')
-    $switchPokeIVIcons.on('change', function () {
-        Store.set('showIVIcons', this.checked)
-        redrawPokemon(mapData.pokemons)
     })
 
     if ($('#nav-accordion').length) {
