@@ -38,8 +38,8 @@ if ($blockIframe) {
     header('X-Frame-Options: DENY');
 }
 if (strtolower($map) === "rdm") {
-    if (strtolower($fork) === "beta") {
-        $getList = new \Scanner\RDM_beta();
+    if (strtolower($fork) === "default" || strtolower($fork) === "beta") {
+        $getList = new \Scanner\RDM();
     }
 } elseif (strtolower($map) === "rocketmap") {
     if (strtolower($fork) === "mad") {
@@ -365,7 +365,7 @@ if (!$noLoadingScreen) {
                  </a>';
         }
         ?>
-        <?php if (! $noWeatherOverlay) {
+        <?php if (! $noHeaderWeatherIcon) {
             ?>
             <div id="currentWeather"></div>
             <?php
@@ -1937,7 +1937,7 @@ if (!$noLoadingScreen) {
                     <?php if (! $noSearchNests) { ?>
                         <div id="tab-nests">
                             <input type="search" id="nest-search" name="nest-search"
-                                   placeholder="<?php echo i8ln('Enter Pokémon or Type'); ?>"
+                                   placeholder="<?php echo i8ln('Enter nest Pokémon or Type'); ?>"
                                    data-type="nests" class="search-input"/>
                             <ul id="nest-search-results" class="search-results nest-results"></ul>
                         </div>

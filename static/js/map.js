@@ -363,6 +363,17 @@ function removePokestopMarker(pokestopId) { // eslint-disable-line no-unused-var
     mapData.pokestops[pokestopId].hidden = true
 }
 
+function removeGymMarker(gymId) { // eslint-disable-line no-unused-vars
+    if (mapData.gyms[gymId].marker.rangeCircle) {
+        markers.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        markersnotify.removeLayer(mapData.gyms[gymId].marker.rangeCircle)
+        delete mapData.gyms[gymId].marker.rangeCircle
+    }
+    markers.removeLayer(mapData.gyms[gymId].marker)
+    markersnotify.removeLayer(mapData.gyms[gymId].marker)
+    mapData.gyms[gymId].hidden = true
+}
+
 function createServiceWorkerReceiver() {
     navigator.serviceWorker.addEventListener('message', function (event) {
         const data = JSON.parse(event.data)
@@ -1034,12 +1045,13 @@ function createHearts() {
         const valentine = '<canvas id="valentine-canvas"></canvas>'
         $('#map').append(valentine)
         var hearts = {
-            heartHeight: 15,
-            heartWidth: 15,
+            heartHeight: 25,
+            heartWidth: 25,
             hearts: [],
-            heartImage: 'https://pngimage.net/wp-content/uploads/2018/06/heart-png-images.png',
-            maxHearts: 30,
-            minScale: 0.3,
+            heartImage: 'static/images/misc/heart-0.png',
+            heartImageAlt: 'static/images/misc/heart-1.png',
+            maxHearts: 50,
+            minScale: 0.4,
             draw: function () {
                 this.setCanvasSize()
                 this.ctx.clearRect(0, 0, this.w, this.h)
@@ -1047,7 +1059,11 @@ function createHearts() {
                     var heart = this.hearts[i]
                     heart.image = new Image()
                     heart.image.style.height = heart.height
-                    heart.image.src = this.heartImage
+                    if (i % 2 === 1) {
+                        heart.image.src = this.heartImageAlt
+                    } else {
+                        heart.image.src = this.heartImage
+                    }
                     this.ctx.globalAlpha = heart.opacity
                     this.ctx.drawImage(heart.image, heart.x, heart.y, heart.width, heart.height)
                 }
@@ -1453,6 +1469,8 @@ function gymLabel(item) {
         raidStr += '<div>' + i8ln('Start') + ': <b>' + raidStartStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_start'] + '" start>(' + generateRemainingTimer(item['raid_start'], 'start') + ')</span></div>'
         raidStr += '<div>' + i8ln('End') + ': <b>' + raidEndStr + '</b> <span class="label-countdown" disappears-at="' + item['raid_end'] + '" end>(' + generateRemainingTimer(item['raid_end'], 'end') + ')</span></div>'
 
+        raidStr += '<a href="javascript:removeGymMarker(\'' + item['gym_id'] + '\')" title="' + i8ln('Hide this Gym') + '"><i class="fas fa-trash-alt" style="font-size:15px;"></i></a>'
+
         var raidForm = item['form']
         var formStr = ''
         if (raidForm <= 10 || raidForm == null || raidForm === '0') {
@@ -1655,15 +1673,15 @@ function getQuest(item) {
                     if (questinfo['pokemon_ids'].length > 1) {
                         $.each(questinfo['pokemon_ids'], function (index, id) {
                             if (index === questinfo['pokemon_ids'].length - 2) {
-                                pstr += idToPokemon[id].name + ' or '
+                                pstr += idToPokemon[id] + ' or '
                             } else if (index === questinfo['pokemon_ids'].length - 1) {
-                                pstr += idToPokemon[id].name
+                                pstr += idToPokemon[id]
                             } else {
-                                pstr += idToPokemon[id].name + ', '
+                                pstr += idToPokemon[id] + ', '
                             }
                         })
                     } else {
-                        pstr = idToPokemon[questinfo['pokemon_ids']].name
+                        pstr = idToPokemon[questinfo['pokemon_ids']]
                     }
                     str = str.replace('pokémon', pstr)
                     str = str.replace('Snapshot(s)', 'Snapshot(s) of ' + pstr)
@@ -1701,7 +1719,8 @@ function getQuest(item) {
                         str = str.replace('Catch', 'Use').replace('pokémon with berrie(s)', 'berrie(s) to help catch Pokémon')
                     }
                     if (questinfo !== null) {
-                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']].name)
+                        str = str.replace('berrie(s)', idToItem[questinfo['item_id']])
+                        str = str.replace('Evolve {0} pokémon', 'Evolve {0} pokémon with a ' + idToItem[questinfo['item_id']])
                     } else {
                         str = str.replace('Evolve', 'Use a item to evolve')
                     }
@@ -6622,7 +6641,7 @@ $(function () {
                 name: i8ln(value['name'])
             })
             value['name'] = i8ln(value['name'])
-            idToItem[key] = value
+            idToItem[key] = value['name']
         })
         $questsExcludeItem.select2({
             placeholder: i8ln('Select Item'),
@@ -6668,7 +6687,7 @@ $(function () {
                 })
             })
             value['types'] = _types
-            idToPokemon[key] = value
+            idToPokemon[key] = value['name']
         })
 
         // setup the filter lists
