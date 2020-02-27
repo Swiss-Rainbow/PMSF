@@ -1149,6 +1149,7 @@ function initSidebar() {
     $('#pokemon-filter-wrapper').toggle(Store.get('showPokemon'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#allPokestops-switch').prop('checked', Store.get('showAllPokestops'))
     $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
@@ -1179,7 +1180,6 @@ function initSidebar() {
     $('#bounce-switch').prop('checked', Store.get('remember_bounce_notify'))
     $('#notification-switch').prop('checked', Store.get('remember_notification_notify'))
     $('#dark-mode-switch').prop('checked', Store.get('darkMode'))
-    $('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
 
     if (Store.get('showGyms') === true || Store.get('showRaids') === true) {
         $('#gyms-raid-filter-wrapper').toggle(true)
