@@ -35,6 +35,7 @@ var $excludeGrunts
 var $excludeRaidboss
 var $excludeRaidegg
 var $selectIconStyle
+var $switchPokeIVIcons
 
 var language = document.documentElement.lang === '' ? 'en' : document.documentElement.lang
 var languageSite = 'en'
@@ -1148,6 +1149,7 @@ function initSidebar() {
     $('#pokemon-filter-wrapper').toggle(Store.get('showPokemon'))
     $('#big-karp-switch').prop('checked', Store.get('showBigKarp'))
     $('#tiny-rat-switch').prop('checked', Store.get('showTinyRat'))
+    $('#iv-icon-switch').prop('checked', Store.get('showIVIcons'))
     $('#pokestops-switch').prop('checked', Store.get('showPokestops'))
     $('#allPokestops-switch').prop('checked', Store.get('showAllPokestops'))
     $('#pokestops-filter-wrapper').toggle(Store.get('showPokestops'))
@@ -7438,6 +7440,12 @@ $(function () {
         } else {
             disableDarkMode()
         }
+    })
+      
+	$switchPokeIVIcons = $('#iv-icon-switch')
+        $switchPokeIVIcons.on('change', function () {
+        Store.set('showIVIcons', this.checked)
+        redrawPokemon(mapData.pokemons)
     })
 
     if ($('#nav-accordion').length) {
