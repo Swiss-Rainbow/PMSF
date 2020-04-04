@@ -392,6 +392,7 @@ class RDM extends Scanner
         lon AS longitude,
         name AS pokestop_name,
         url,
+        updated AS last_seen,
         lure_expire_timestamp AS lure_expiration,
         incident_expire_timestamp AS incident_expiration,
         lure_id,
@@ -456,6 +457,7 @@ class RDM extends Scanner
             $pokestop["grunt_type_gender"] = empty($grunttype_pid) ? null : i8ln($this->grunttype[$grunttype_pid]["grunt"]);
             $pokestop["encounters"] = empty($this->grunttype[$grunttype_pid]["encounters"]) ? null : $this->grunttype[$grunttype_pid]["encounters"];
             $pokestop["second_reward"] = empty($this->grunttype[$grunttype_pid]["second_reward"]) ? null : $this->grunttype[$grunttype_pid]["second_reward"];
+            $pokestop["last_seen"] = $pokestop["last_seen"] * 1000;
 
             $data[] = $pokestop;
             unset($pokestops[$i]);
@@ -551,6 +553,7 @@ class RDM extends Scanner
         raid_pokemon_move_1,
         raid_pokemon_move_2,
         raid_pokemon_form,
+        raid_pokemon_costume,
         raid_pokemon_cp,
         raid_pokemon_gender,
         ex_raid_eligible AS park
@@ -572,7 +575,7 @@ class RDM extends Scanner
             $gym["team_id"] = intval($gym["team_id"]);
             $gym["pokemon"] = [];
             $gym["raid_pokemon_name"] = empty($raid_pid) ? null : i8ln($this->data[$raid_pid]["name"]);
-            $gym["raid_pokemon_costume"] = 0;
+            $gym["raid_pokemon_costume"] = intval($gym["raid_pokemon_costume"]);
             $gym["form"] = intval($gym["raid_pokemon_form"]);
             $gym["latitude"] = floatval($gym["latitude"]);
             $gym["longitude"] = floatval($gym["longitude"]);
