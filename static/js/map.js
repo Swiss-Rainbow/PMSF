@@ -2044,11 +2044,11 @@ function addRangeCircle(marker, map, type, teamId) {
             break
         case 'pokestop':
             circleColor = '#3EB0FF'
-            range = 40
+            range = 80
             break
         case 'gym':
             circleColor = teamColor
-            range = 40
+            range = 80
             break
     }
 
