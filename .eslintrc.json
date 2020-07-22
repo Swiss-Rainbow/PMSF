@@ -217,6 +217,6 @@
     "noDarkMode": true,
     "defaultDustAmount": true,
     "noCatchRates": true,
-	  "enablePokeIVIcons": true
+    "nestAvgDefault": true
   }
 }
