@@ -200,8 +200,6 @@ $noCatchRates = false;
 $noRarityDisplay = false;                                      // true/false
 $noWeatherIcons = true;
 $no100IvShadow = false;
-$noPokeIVIcons = false;										   // true/false
-$enablePokeIVIcons = 'false';                                  // true/false
 
 /* Notification Settings */
 $noNotifyPokemon = false;                                       // true/false
