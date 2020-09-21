@@ -119,6 +119,11 @@ var StoreOptions = {
             default: hideQuestsPokemon,
             type: StoreTypes.JSON
         },
+    'remember_quests_exclude_energy':
+        {
+            default: hideQuestsEnergy,
+            type: StoreTypes.JSON
+        },
     'remember_quests_exclude_item':
         {
             default: hideQuestsItem,
@@ -277,6 +282,11 @@ var StoreOptions = {
     'showDustAmount':
         {
             default: defaultDustAmount,
+            type: StoreTypes.Number
+        },
+    'showNestAvg':
+        {
+            default: nestAvgDefault,
             type: StoreTypes.Number
         },
     'showWeather':

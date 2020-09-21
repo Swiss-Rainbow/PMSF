@@ -147,8 +147,7 @@
   "to join!": "aby dołączyć!",
   "Enter Reward Name": "Wpisz nagrodę",
   "Enter Pokéstop Name": "Wpisz nazwę Pokestopa",
-  "Enter Pokemon or Type": "Wpisz nazwę Pokemona lub jego typ",
-  "Enter Pokémon or Type": "Wpisz nazwę Pokemona lub jego typ",
+  "Enter nest Pokémon or Type": "Wpisz nazwę Pokemona lub jego typ",
   "Directions": "Nawigacja",
   "Pokemon &amp; Nests":"Pokemony i Nesty",
   "Lures only":"Tylko Lury",
@@ -321,5 +320,11 @@
   "Spanish":"Español",
   "Off":"Wyłączone",
   "Icon Style":"Styl Ikon",
-  "Dark Mode":"Ciemny Motyw"
+  "Dark Mode":"Ciemny Motyw",
+  "Quest found":"Quest wykryty",
+  "Last seen":"Ostatni skan",
+  "Notify of IV":"Powiadomienia o IV",
+  "Membership expires on": "Dostęp wygasa:",
+  "Membership expired on": "Dostęp wygasł:",
+  "Show nest average. ": "Średnia ilość Poków: "
 }

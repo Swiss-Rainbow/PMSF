@@ -4,8 +4,6 @@ namespace Config;
 
 // Do not touch this!
 require 'default.php';
-require __DIR__ . '/../Medoo.php';
-
 use Medoo\Medoo;
 
 //======================================================================
@@ -27,7 +25,7 @@ $startingLng = 5.302366;                                           // Starting l
 $maxLatLng = 1;                                                     // Max latitude and longitude size (1 = ~110km, 0 to disable)
 $defaultZoom = 16;                                                  // Default zoom level for first time users.
 $maxZoomOut = 11;                                                   // Max zoom out level (11 ~= $maxLatLng = 1, 0 to disable, lower = the further you can zoom out)
-$maxZoomIn = 18;                                                    // Max zoom in level 18
+$maxZoomIn = 18;                                                    // Max zoom in level 18, higher values will be loaded from level 18 and auto-scaled
 $disableClusteringAtZoom = 15;                                      // Disable clustering above this value. 0 to disable
 $zoomToBoundsOnClick = 15;                                          // Zoomlevel on clusterClick
 $maxClusterRadius = 30;                                             // The maximum radius that a cluster will cover from the central marker (in pixels).
@@ -121,34 +119,62 @@ $motdContent = "This is an example MOTD<br>Do whatever you like with it.";
 
 /* Favicon */
 $faviconPath = '';                                                  // Upload favicon.ico to custom folder, leave '' for empty ( $faviconPath = 'custom/favicon.ico'; )
+$appIconPath = 'static/appicons/';
 
 /* IMGBB API */
 $imgurCID = "";
 
-/* Counts */
-$numberOfPokemon = 649;
-$numberOfItem = 1405;
-$numberOfGrunt = 50;
+/* UserTimezone */
+#$userTimezone = "Etc/UTC";			                    // If different from server settings set php frontend timezone https://www.php.net/manual/en/timezones.php
 //-----------------------------------------------------
 // Login
 //-----------------------------------------------------
+$useLoginCookie = false;					    // Use cookie to restore session after browser is closed.
 $forcedLogin = false;                                               // Force users to login before they can see map
+$allowMultiLogin = false;                                           // Allow users to login with multiple devices simulteously.
 $adminUsers = ['admin@example.com', 'admin2@example.com'];          // You can add multiple admins by adding them to the array.
-$manualAccessLevel = false;
 /* Discord Auth */
 $noDiscordLogin = true;                                             // This will enable login through discord.
                                                                     // 1. Create a discord bot here -> https://discordapp.com/developers/applications/me
                                                                     // 2. Install composer with "apt-get install composer".
                                                                     // 3. Navigate to your website's root folder and type "composer install" to install the dependencies.
                                                                     // 4. Add your callback-page as a REDIRECT URI to your discord bot. Should be the same as $discordBotRedirectUri.
-                                                                    // 5. Enter Client ID, Client Secret and Redirect URI below.
+                                                                    // 5. Enter Client ID, Client Secret, Token and Redirect URI below.
 $discordBotClientId = 0;
 $discordBotClientSecret = "";
-$discordBotRedirectUri = "https://example.com/discord-callback.php";
+$discordBotRedirectUri = "https://example.com/login?callback=discord";
+$discordBotToken = "";
+
+/* Match role-id values with access levels in access config. Remove or add according your needs */
+$guildRoles = [
+    'guildIDS' => [
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
+        ],
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3,
+            'ROLE-ID-HERE' => 4
+        ],
+        'SERVER-ID-HERE' => [
+            'ROLE-ID-HERE' => 1,
+            'ROLE-ID-HERE' => 2,
+            'ROLE-ID-HERE' => 3
+        ]
+    ]
+];
+$noFacebookLogin = true;
+$facebookAppId = '';                            // Facebook App ID
+$facebookAppSecret = '';                        // Facebook App Secret
+$facebookAppRedirectUri = 'https://Yourdomain.com/login?callback=facebook'; // Callback url make sure this is the same as set in Facebook app config
+$facebookAccessLevel = '1';                     // Accesslevel used in access-config.php
 
 $userBlacklist = [''];                                              // Array of user ID's that are always blocked from accessing the map
 $userWhitelist = [''];                                              // Array of user ID's that's allowed to bypass the server blacklist
-$serverWhitelist = [''];                                            // Array of server ID's. Your users will need to be in at least one of them
 $serverBlacklist = [''];                                            // Array of server ID's. A user that's a member of any of these and not in your user whitelist will be blocked
 $logFailedLogin = 'logs/failed_login.log';                          // File location of where to store a log file of blocked users
 
@@ -165,9 +191,11 @@ $noExcludeMinIV = false;
 $noMinIV = false;
 $noMinLevel = false;
 $noHighLevelData = false;
+$noCatchRates = false;
 $noRarityDisplay = false;
 $noWeatherIcons = true;
 $no100IvShadow = false;
+$noHideSingleMarker = false;
 /* Notification Settings */
 $noNotifyPokemon = false;
 $noNotifyRarity = false;
@@ -262,10 +290,14 @@ $noQuests = false;
 $enableQuests = 'false';
 $noQuestsItems = false;
 $noQuestsPokemon = false;
+$noQuestsEnergy = false;
 $hideQuestsPokemon = '[]';  					                    // Pokemon ids will default be hidden in the menu every user is able to change this personaly
 $generateExcludeQuestsPokemon = true;                               // Generate $excludeQuestsPokemon based on active quests in database
+$generateExcludeQuestsEnergy = true;                                // Generate $excludeQuestsEnergy based on active quests in database
 $generateExcludeQuestsItem = true;
 $excludeQuestsPokemon = [];					                        // All Pokémon in this array will not be shown in the filter.
+$hideQuestsEnergy = '[]';
+$excludeQuestsEnergy = [];
 $hideQuestsItem = '[4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405]';    // Item ids "See protos https://github.com/Furtif/POGOProtos/blob/master/src/POGOProtos/Inventory/Item/ItemId.proto"
 $excludeQuestsItem = [4, 5, 301, 401, 402, 403, 404, 501, 602, 603, 604, 702, 704, 707, 801, 901, 902, 903, 1001, 1002, 1401, 1402, 1402, 1403, 1404, 1405];   // All excluded item wil not be shown in the filter.
 $noItemNumbers = false;
@@ -320,7 +352,7 @@ $notifyIv = '""';                                                   // "" for em
 
 $notifyLevel = '""';                                                // "" for empty or a number
 
-$notifyRaid = 5;                                                    // 1,2,3,4 or 5, 0 to disable
+$notifyRaid = 6;                                                    // 1,2,3,4 or 5, 0 to disable
 
 $notifySound = 'false';
 
@@ -344,7 +376,7 @@ $iconRepos = [["Standard","$iconRepository"],                                   
               ["Another Iconpack","https://AnotherURL.com/some/other/subfolders/"]]; // You May add different iconPacks here so mapusers can switch between them
 
 $noMapStyle = false;
-$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite, stylewikipedia
+$mapStyle = 'openstreetmap';                                        // openstreetmap, darkmatter, styleblackandwhite, styletopo, stylesatellite
 
 $noDirectionProvider = false;
 $directionProvider = 'google';                                      // google, waze, apple, bing, google_pin
@@ -475,6 +507,9 @@ $noEditCommunity = true;
 // Nests
 //-----------------------------------------------------
 $noNests = true;
+$noNestsAvg = true;                                                   // true/false
+$nestAvgMax = 50;						      // Nest Average filter maximum
+$nestAvgDefault = 5;                                                  // Nest Average filter default
 $enableNests = 'false';
 $hideNestCoords = false;
 $noManualNests = true;
@@ -497,6 +532,7 @@ $areas = [];      // [[latitude,longitude,zoom,"name"],[latitude,longitude,zoom,
 //-----------------------------------------------------
 // Weather Config
 //-----------------------------------------------------
+$noHeaderWeatherIcon = true;
 $noWeatherOverlay = true;
 $enableWeatherOverlay = 'false';
 
@@ -517,6 +553,7 @@ $weatherColors = [
 //-----------------------------------------------------
 $letItSnow = true;                                                   // Show snow overlay at 24, 25 and 26 December
 $makeItBang = true;                                                  // Show fireworks overlay at 31 December and 1 January
+$showYourLove = true;                                                // Show valentine overlay at 14 februari
 
 //-----------------------------------------------------
 // DEBUGGING
@@ -527,35 +564,27 @@ $enableDebug = false;
 //-----------------------------------------------------
 // DATABASE CONFIG
 //-----------------------------------------------------
-$map = "rdm";                                                       // {monocle}/{rdm}/{rocketmap}
-$fork = "default";                                                  // {default/alternate}/{default/beta}/{mad}
-$queryInterval = '2500';                                            // Interval between raw_data requests. Try to lower to increase performance.
+$map = "rdm";                                                       // rdm / rocketmap
+$fork = "default";                                                  // beta / mad
+$queryInterval = '2500';                                            // Interval between raw_data requests.
 
-$db = new Medoo([// required
+$db = new Medoo([
     'database_type' => 'mysql',
-    'database_name' => 'Monocle',
+    'database_name' => 'scannerdb',
     'server' => '127.0.0.1',
     'username' => 'database_user',
     'password' => 'database_password',
-    'charset' => 'utf8',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
+    'charset' => 'utf8'
 ]);
 
-//$manualdb = new Medoo([// required
+//$manualdb = new Medoo([
 //    'database_type' => 'mysql',
-//    'database_name' => 'Monocle',
+//    'database_name' => 'manualdb',
 //    'server' => '127.0.0.1',
 //    'username' => 'database_user',
 //    'password' => 'database_password',
-//    'charset' => 'utf8mb4',
-
-    // [optional]
-    //'port' => 5432,                                               // Comment out if not needed, just add // in front!
-    //'socket' => /path/to/socket/,
-//]);                                                               // Dont forget to uncomment this line to use $manualdb :)
+//    'charset' => 'utf8mb4'
+//]);
 
 // DONT EDIT THE CODE BELOW
 if (($noNativeLogin === false || $noDiscordLogin === false) && !empty($_SESSION['user']->user)) {
