@@ -1522,7 +1522,7 @@ function gymLabel(item) {
         var formStr = (raidForm <= 0 || raidForm == null || raidForm === '0') ? '00' : raidForm
         var pokemonid = item['raid_pokemon_id']
         var pokemonidStr = (pokemonid <= 9) ? '00' + pokemonid : ((pokemonid <= 99) ? '0' + pokemonid : pokemonid)
-        var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['pokemon_costume'] : ''
+        var costumeStr = (item['raid_pokemon_costume'] > 0) ? '_' + item['raid_pokemon_costume'] : ''
         var evolutionStr = (evolution > 0) ? '_' + evolution : ''
         if (raidStarted) {
             raidIcon = '<img style="width: 70px;" src="' + iconpath + 'pokemon_icon_' + pokemonidStr + '_' + formStr + costumeStr + evolutionStr + '.png"/>'
@@ -7724,7 +7724,7 @@ function updateUser() {
         return false
     }
     loadUser(engine).done(function (result) {
-        if (result === 'reload') {
+        if (result.action === 'reload') {
             window.location.href = './logout?action=' + engine + '-logout&reason=change'
         }
     })
@@ -7745,7 +7745,6 @@ function loadUser(engine) {
             toastr.options = toastrOptions
         },
         complete: function complete() {
-            updateMap()
         }
     })
 }

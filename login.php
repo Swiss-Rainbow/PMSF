@@ -77,6 +77,7 @@ if (isset($_GET['action'])) {
                                 break;
                             case 'invalid-token':
                                 $html .= "<div id='login-error'>" . i8ln('We have logged you out. This might be because of invalid or expired token or your account has been logged in on another device.') . "</div>";
+                                break;
                             case 'access-change':
                                 $html .= "<div id='login-error'>" . i8ln('Your level of access changed while logged in please login again to get the new level of access.') . "</div>";
 
@@ -509,15 +510,16 @@ if (isset($_GET['callback'])) {
     }
 }
 if (!empty($_POST['refresh'])) {
-    $answer = '';
+    header('Content-Type: application/json');
+    $answer = array();
     if ($_POST['refresh'] == 'discord') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level', 'discord_guilds'],['id' => $_SESSION['user']->id]);
         if (empty($dbUser)) {
-            $answer = 'false';
+            $answer['action'] = 'false';
         } else {
             $accessLevel = checkAccessLevelDiscord($dbUser['id'], json_decode($dbUser['discord_guilds']));
             if ($accessLevel == $dbUser['access_level']) {
-                $answer = 'true';
+                $answer['action'] = 'true';
             } elseif (!empty($accessLevel)) {
                 $manualdb->update('users', [
                     'access_level' => $accessLevel,
@@ -525,7 +527,7 @@ if (!empty($_POST['refresh'])) {
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             } else {
                 $manualdb->update('users', [
                     'access_level' => null,
@@ -533,43 +535,44 @@ if (!empty($_POST['refresh'])) {
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             }
         }
     }
     if ($_POST['refresh'] == 'native') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
         if ($_SESSION['user']->access_level != $dbUser['access_level']) {
-            $answer = 'reload';
+            $answer['action'] = 'reload';
         }
     }
     if ($_POST['refresh'] == 'patreon') {
         $dbUser = $manualdb->get('users', ['id','session_id', 'access_level'],['id' => $_SESSION['user']->id]);
         if (empty($dbUser)) {
-            $answer = 'false';
+            $answer['action'] = 'false';
         } else {
             $accessLevel = checkAccessLevelPatreon($dbUser['session_id'], $dbUser['id']);
             if ($accessLevel == $dbUser['access_level']) {
-                $answer = 'true';
+                $answer['action'] = 'true';
             } elseif (!empty($accessLevel)) {
                 $manualdb->update('users', [
                     'access_level' => $accessLevel
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             } else {
                 $manualdb->update('users', [
                     'access_level' => null
                 ], [
                     'id' => $dbUser['id']
                 ]);
-                $answer = 'reload';
+                $answer['action'] = 'reload';
             }
         }
     }
-    $answer = json_encode($answer);
-    echo $answer;
+    $json = json_encode($answer);
+    echo $json;
+    die();
 }
 if (!empty($_POST['signed_request'])) {
     $request = parse_signed_request($_POST['signed_request']);
