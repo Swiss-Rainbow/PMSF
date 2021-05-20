@@ -324,6 +324,16 @@ var StoreOptions = {
             default: enableNestPolygon,
             type: StoreTypes.Boolean
         },
+    'showToast':
+        {
+            default: true,
+            type: StoreTypes.Boolean
+        },
+    'toastPokemonDelay':
+        {
+            default: 2000,
+            type: StoreTypes.Number
+        },
     'playSound':
         {
             default: notifySound,
