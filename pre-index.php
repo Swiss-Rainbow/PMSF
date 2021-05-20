@@ -535,21 +535,7 @@ if (!$noLoadingScreen) {
                                 </div>
                             </div>
                             <?php
-						}
-                        if (! $noHighLevelData && ! $noPokeIVIcons ) {
-                            ?>
-                            <div class="form-control switch-container">
-                                <h3><?php echo i8ln( 'IV Icons' ) ?></h3>
-                                <div class="onoffswitch">
-                                    <input id="iv-icon-switch" type="checkbox" name="iv-icon-switch" class="onoffswitch-checkbox">
-                                    <label class="onoffswitch-label" for="iv-icon-switch">
-                                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                                        <span class="switch-handle"></span>
-                                    </label>
-                                </div>
-                            </div>
-                            <?php
-                        } ?>
+						}?>
                         <div class="form-row min-stats-row">
                             <?php
                             if (! $noMinIV) {
@@ -2411,9 +2397,7 @@ if (!$noLoadingScreen) {
     var copyrightSafe = <?php echo $copyrightSafe === true ? 'true' : 'false' ?>;
     var forcedTileServer = <?php echo $forcedTileServer === true ? 'true' : 'false' ?>;
     var noRarityDisplay = <?php echo $noRarityDisplay === true ? 'true' : 'false' ?>;
-    var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;
-	var noPokeIVIcons = <?php echo $noPokeIVIcons === true ? 'true' : 'false' ?>;
-    var enablePokeIVIcons = <?php echo $noPokeIVIcons ? 'false' : $enablePokeIVIcons ?>;
+    var noWeatherIcons = <?php echo $noWeatherIcons === true ? 'true' : 'false' ?>;	
     var noIvShadow = <?php echo $no100IvShadow === true ? 'true' : 'false' ?>;
     var noRaidTimer = <?php echo $noRaidTimer === true ? 'true' : 'false' ?>;
     var enableRaidTimer = <?php echo $noRaidTimer ? 'false' : $enableRaidTimer ?>;
